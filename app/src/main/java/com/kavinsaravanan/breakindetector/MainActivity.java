@@ -1,11 +1,11 @@
 package com.kavinsaravanan.breakindetector;
 
-import com.sensorapp.impactlib.PermissionActivity;
+import com.sensorapp.impactlib.HelperActivity;
 
 import android.os.Bundle;
 import android.widget.Toast;
 
-public class MainActivity extends PermissionActivity {
+public class MainActivity extends HelperActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +17,8 @@ public class MainActivity extends PermissionActivity {
     @Override
     public void onMicrophonePermissionGranted() {
         super.onMicrophonePermissionGranted();
-        Toast.makeText(this, "Permission granted!!!", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Permission granted!!!", Toast.LENGTH_LONG).show();
+        launchActivityOnButtonClick(this, R.id.btn_start, ImpactActivity.class);
     }
 
     @Override
