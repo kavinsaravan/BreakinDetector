@@ -15,6 +15,25 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
         android:gravity="center_horizontal"
+        android:layout_weight="0.15"
         android:text="Silence" />
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/lc_x_axis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.26"
+        />
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/lc_y_axis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.26"
+        />
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/lc_z_axis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.26"
+        />
 
 </LinearLayout>
