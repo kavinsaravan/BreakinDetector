@@ -2,6 +2,7 @@ package com.kavinsaravanan.breakindetector;
 
 import android.app.Activity;
 import android.media.AudioRecord;
+import android.media.MediaRecorder;
 import android.os.Handler;
 import android.widget.TextView;
 
@@ -9,6 +10,7 @@ import org.tensorflow.lite.support.audio.TensorAudio;
 import org.tensorflow.lite.support.label.Category;
 import org.tensorflow.lite.task.audio.classifier.AudioClassifier;
 import org.tensorflow.lite.task.audio.classifier.Classifications;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,12 +21,21 @@ public class ImpactAudioClassifier {
     private AudioClassifier audioClassifier;
     private AudioRecord audioRecord;
     private Activity activity;
-    private TextView textView;
+    private TextView categoryTextView;
+    private TextView amplitudeTextView;
     private final Handler handler = new Handler();
+    private MediaRecorder mediaRecorder;
 
-    public ImpactAudioClassifier(Activity activity, int textViewId) {
+    public ImpactAudioClassifier(Activity activity, int categoryTextViewId, int amplitudeTextViewId) {
         this.activity = activity;
-        this.textView = activity.findViewById(textViewId);
+        this.categoryTextView = activity.findViewById(categoryTextViewId);
+        this.amplitudeTextView = activity.findViewById(amplitudeTextViewId);
+        this.mediaRecorder = new MediaRecorder();
+        this.mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        this.mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
+        String outputFile = new String(activity.getFilesDir().getAbsolutePath() + "/test.3gp");
+        this.mediaRecorder.setOutputFile(outputFile);
+        this.mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
     }
 
     public void startAudioClassifier() throws IOException {
@@ -32,6 +43,10 @@ public class ImpactAudioClassifier {
         if (audioClassifier != null) {
             return;
         }
+        // start media recorder
+        mediaRecorder.prepare();
+        mediaRecorder.start();
+
         // initialize audio classifier
         audioClassifier = AudioClassifier.createFromFile(activity, MODEL_FILE);
         TensorAudio audioTensor = audioClassifier.createInputTensorAudio();
@@ -55,7 +70,8 @@ public class ImpactAudioClassifier {
                         selected.add(category.getLabel());
                     }
                 }
-                textView.setText(selected.toString());
+                categoryTextView.setText(selected.toString());
+                amplitudeTextView.setText(mediaRecorder.getMaxAmplitude() + " db");
 
                 //add a delay of 1 second
                 handler.postDelayed(this, 1000);

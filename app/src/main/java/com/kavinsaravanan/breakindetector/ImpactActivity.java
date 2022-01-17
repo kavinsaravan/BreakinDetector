@@ -29,7 +29,7 @@ public class ImpactActivity extends AppCompatActivity implements ImpactMotionNot
         plotYAxis = new SinglePlot(chartYAxis, "Y Axis Motion", "Y-Axis", Color.GREEN);
         LineChart chartZAxis = findViewById(R.id.lc_z_axis);
         plotZAxis = new SinglePlot(chartZAxis, "Z Axis Motion", "Z-Axis", Color.BLUE);
-        impactAudioClassifier = new ImpactAudioClassifier(this, R.id.tv_sound_category);
+        impactAudioClassifier = new ImpactAudioClassifier(this, R.id.tv_sound_category, R.id.tv_amplitude);
         impactMotionClassifier = new ImpactMotionClassifier(this, this);
     }
 
