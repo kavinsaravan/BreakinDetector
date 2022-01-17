@@ -14,9 +14,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
-        android:gravity="center_horizontal"
-        android:layout_weight="0.15"
+        android:layout_weight="0.07"
+        android:gravity="bottom|center_horizontal"
         android:text="Silence" />
+    <TextView
+        android:id="@+id/tv_amplitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:layout_weight="0.07"
+        android:gravity="center_horizontal"
+        android:text="100 db" />
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lc_x_axis"
         android:layout_width="match_parent"
