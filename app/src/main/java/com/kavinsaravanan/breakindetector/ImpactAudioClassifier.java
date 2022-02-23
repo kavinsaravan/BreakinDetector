@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Handler;
-import android.widget.TextView;
 
 import org.tensorflow.lite.support.audio.TensorAudio;
 import org.tensorflow.lite.support.label.Category;
 import org.tensorflow.lite.task.audio.classifier.AudioClassifier;
 import org.tensorflow.lite.task.audio.classifier.Classifications;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,21 +19,15 @@ public class ImpactAudioClassifier {
     private AudioClassifier audioClassifier;
     private AudioRecord audioRecord;
     private Activity activity;
-    private TextView categoryTextView;
-    private TextView amplitudeTextView;
     private final Handler handler = new Handler();
     private MediaRecorder mediaRecorder;
+    private ImpactAudioNotifier impactAudioNotifier;
+    long amplitudeThreshold = 1000;
 
-    public ImpactAudioClassifier(Activity activity, int categoryTextViewId, int amplitudeTextViewId) {
+    public ImpactAudioClassifier(Activity activity, ImpactAudioNotifier impactAudioNotifier) {
         this.activity = activity;
-        this.categoryTextView = activity.findViewById(categoryTextViewId);
-        this.amplitudeTextView = activity.findViewById(amplitudeTextViewId);
         this.mediaRecorder = new MediaRecorder();
-        this.mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        this.mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
-        String outputFile = new String(activity.getFilesDir().getAbsolutePath() + "/test.3gp");
-        this.mediaRecorder.setOutputFile(outputFile);
-        this.mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        this.impactAudioNotifier = impactAudioNotifier;
     }
 
     public void startAudioClassifier() throws IOException {
@@ -43,7 +35,14 @@ public class ImpactAudioClassifier {
         if (audioClassifier != null) {
             return;
         }
+
         // start media recorder
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        String outputFile = this.activity.getApplicationContext().getFilesDir().getAbsolutePath() + "/test.3gp";
+        mediaRecorder.setOutputFile(outputFile);
+
         mediaRecorder.prepare();
         mediaRecorder.start();
 
@@ -70,17 +69,17 @@ public class ImpactAudioClassifier {
                         selected.add(category.getLabel());
                     }
                 }
-                categoryTextView.setText(selected.toString());
-                amplitudeTextView.setText(mediaRecorder.getMaxAmplitude() + " db");
+                impactAudioNotifier.reportAudioEvent(selected.toString(), mediaRecorder.getMaxAmplitude());
 
                 //add a delay of 1 second
-                handler.postDelayed(this, 1000);
+                handler.postDelayed(this, amplitudeThreshold);
             }
         };
         runnable.run();
     }
 
     public void stopAudioClassifier() {
+        mediaRecorder.reset();
         handler.removeCallbacksAndMessages(null);
         audioRecord.stop();
         audioRecord = null;

@@ -9,12 +9,38 @@
     android:orientation="vertical"
     tools:context=".ImpactActivity">
 
+    <com.sensorapp.impactlib.VanishingTextView
+        android:id="@+id/tv_alert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="Possible Impact Detected!!!"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:background="@color/red"
+        android:gravity="center"
+        android:layout_weight="0.05"
+        android:visibility="invisible"
+        tools:ignore="RtlCompat" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_alert_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.03"
+        android:textColor="@color/white"
+        android:background="@color/red"
+        android:visibility="invisible"
+        tools:text="Feb 1, 2022 3:45pm"
+        android:gravity="center"
+        />
     <TextView
         android:id="@+id/tv_sound_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
-        android:layout_weight="0.07"
+        android:layout_weight="0.04"
+        android:textStyle="bold"
         android:gravity="bottom|center_horizontal"
         android:text="Silence" />
     <TextView
@@ -22,26 +48,38 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
-        android:layout_weight="0.07"
+        android:layout_weight="0.04"
+        android:textStyle="bold"
         android:gravity="center_horizontal"
         android:text="100 db" />
+    <TextView
+        android:id="@+id/tv_motion_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:layout_weight="0.04"
+        android:singleLine="false"
+        android:maxLines="3"
+        android:gravity="center_horizontal"
+        tools:text="This is a very very long text hoping to wrap across multiple lines and goes on forever"
+        />
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lc_x_axis"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.26"
+        android:layout_weight="0.5"
         />
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lc_y_axis"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.26"
+        android:layout_weight="0.5"
         />
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lc_z_axis"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.26"
+        android:layout_weight="0.5"
         />
 
 </LinearLayout>

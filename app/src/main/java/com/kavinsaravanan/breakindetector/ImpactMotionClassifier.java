@@ -15,16 +15,16 @@ public class ImpactMotionClassifier implements SensorEventListener {
     private float deltaX = 0f;
     private float deltaY = 0f;
     private float deltaZ = 0f;
-    private float noiseThreshold = 0.05f;
     private ImpactMotionNotifier impactMotionNotifier;
+    float noiseThreshold = 0.05f;
+    float reportingThreshold = 0.0f;
 
     public ImpactMotionClassifier(Context context, ImpactMotionNotifier impactMotionNotifier) {
         this.impactMotionNotifier = impactMotionNotifier;
-        sensorManager = (SensorManager)context.getSystemService(Context.SENSOR_SERVICE);
+        sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     }
 
-    @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         deltaX = lastX - sensorEvent.values[0];
         deltaY = lastY - sensorEvent.values[1];
@@ -45,7 +45,7 @@ public class ImpactMotionClassifier implements SensorEventListener {
         if (Math.abs(deltaZ) < noiseThreshold) {
             deltaZ = 0;
         }
-        if (deltaX > 0 || deltaY > 0 || deltaZ > 0) {
+        if (deltaX > reportingThreshold || deltaY > reportingThreshold || deltaZ > reportingThreshold) {
             MotionData motionData = new MotionData();
             motionData.deltaX = deltaX;
             motionData.deltaY = deltaY;
@@ -54,9 +54,7 @@ public class ImpactMotionClassifier implements SensorEventListener {
         }
     }
 
-    @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
-
     }
 
     public void startImpactClassifier() {
