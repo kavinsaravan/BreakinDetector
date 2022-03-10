@@ -9,7 +9,7 @@
     android:orientation="vertical"
     tools:context=".ImpactActivity">
 
-    <com.sensorapp.impactlib.VanishingTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_alert"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

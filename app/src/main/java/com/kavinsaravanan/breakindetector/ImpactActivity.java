@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,7 +34,7 @@ public class ImpactActivity extends HelperActivity implements ImpactMotionNotifi
     private TextView alertTimeTextView;
     private AmplitudeQueue amplitudeQueue;
     private boolean startedMonitoring = false;
-    private ArrayList<PrefItem> prefItems = new ArrayList<>();
+    private final ArrayList<PrefItem> prefItems = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +118,8 @@ public class ImpactActivity extends HelperActivity implements ImpactMotionNotifi
             String currentTime = sdf.format(new Date());
             alertTimeTextView.setText(currentTime);
             alertTimeTextView.setVisibility(View.VISIBLE);
+
+            MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.siren);
         }
     }
 
@@ -129,7 +132,8 @@ public class ImpactActivity extends HelperActivity implements ImpactMotionNotifi
 
         String amplitudeThreshold = PreferenceManager.getDefaultSharedPreferences(this).getString("amp-threshold",
                 Long.toString(impactAudioClassifier.amplitudeThreshold));
-        impactAudioClassifier.amplitudeThreshold = Long.parseLong(amplitudeThreshold);
+
+        impactAudioClassifier.amplitudeThreshold = (long) Float.parseFloat(amplitudeThreshold);
 
         String noiseThresold = PreferenceManager.getDefaultSharedPreferences(this).getString("noise-threshold",
                 Float.toString(impactMotionClassifier.noiseThreshold));
